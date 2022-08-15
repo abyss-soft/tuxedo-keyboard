@@ -1,4 +1,10 @@
+[tuxedo-keyboard](https://github.com/tuxedocomputers/tuxedo-keyboard) - драйвера для поддержки управления подсветкой клавиатуры в виде DKMS 
+модуле для ядра linux
+Признаюсь честно, у меня эта штука завелась частично - например после  установки клавиша подсветки клавиатуры(F8) наоборот не работает :)
+Зато начинают работать клавиши отключения touchpad (об этом ниже), переключатель режима самолета(отключение беспроводных сетей) и по кнопке, которая рядом с кнопкой питания будет вызываться tuxedo-control-center из трея.
+
 # Table of Content
+
 - <a href="#description">Description</a>
 - <a href="#building">Building and Install</a>
 - <a href="#using">Using</a>
@@ -7,14 +13,17 @@
 - <a href="#modes">Modes</a>
 
 # Description <a name="description"></a>
+
 TUXEDO Computers kernel module drivers for keyboard, keyboard backlight & general hardware I/O
 
 Features
+
 - Driver for Fn-keys
 - Sysfs control of brightness/color/mode for most TUXEDO keyboards (note: white backlight only models are currently not supported)
 - Hardware I/O driver for TUXEDO Control Center
 
 Modules included in this package
+
 - tuxedo-keyboard
 - tuxedo-io
 - clevo-wmi
@@ -23,6 +32,7 @@ Modules included in this package
 # Building and Install <a name="building"></a>
 
 ## Dependencies:
+
 - make
 - gcc
 - linux-headers
@@ -57,6 +67,7 @@ make clean && make
 ### Add as DKMS Module:
 
 Install the Module:
+
 ```sh
 make clean
 
@@ -64,10 +75,13 @@ sudo make dkmsinstall
 ```
 
 Load the Module with modprobe:
+
 ```sh
 modprobe tuxedo_keyboard
 ```
+
 or
+
 ```sh
 sudo modprobe tuxedo_keyboard
 ```
@@ -77,6 +91,7 @@ You might also want to activate `tuxedo_io` module the same way if you are using
 ### Uninstalling the DKMS module:
 
 Remove the DKMS module and source:
+
 ```sh
 sudo make dkmsremove
 
@@ -96,6 +111,7 @@ modprobe tuxedo_keyboard
 If a module is relevant it will be loaded automatically on boot. If it is not loaded after a reboot, it most likely means that it is not needed.
 
 Add Module to /etc/modules
+
 ```sh
 sudo su
 
@@ -103,7 +119,6 @@ echo tuxedo_keyboard >> /etc/modules
 ```
 
 Default Parameters at start.
-
 
 In this example, we start the kernel module with the following settings:
 
@@ -119,7 +134,9 @@ sudo su
 
 echo "options tuxedo_keyboard mode=0 color_left=0xFF0000 color_center=0x00FF00 color_right=0x0000FF" > /etc/modprobe.d/tuxedo_keyboard.conf
 ```
+
 or
+
 ```sh
 sudo cp tuxedo_keyboard.conf /etc/modprobe.d/tuxedo_keyboard.conf
 ```
@@ -127,63 +144,79 @@ sudo cp tuxedo_keyboard.conf /etc/modprobe.d/tuxedo_keyboard.conf
 # Sysfs <a name="sysfs"></a>
 
 ## General
+
 Path: `/sys/devices/platform/tuxedo_keyboard`
 
 ## color_left
+
 Allowed Values: Hex-Value (e.g. `0xFF0000` for the Color Red)   
 Description: Set the color of the left Keyboard Side
 
 ## color_center
+
 Allowed Values: Hex-Value (e.g. `0xFF0000` for the Color Red)   
 Description: Set the color of the center of Keyboard
 
 ## color_right
+
 Allowed Values: Hex-Value (e.g. `0xFF0000` for the Color Red)   
 Description: Set the color of the right Keyboard Side
 
 ## color_extra
+
 Allowed Values: Hex-Value (e.g. `0xFF0000` for the Color Red)   
 Description: Set the color of the extra region (if exist) of the Keyboard
 
 ## brightness
+
 Allowed Values: `0` - `255`   
 Description: Set the brightness of the Keyboard
 
 ## mode
+
 Allowed Values: `0` - `7`   
 Description: Set the mode of the Keyboard. A list with the modes is under <a href="#modes">Modes</a>
 
 ## state
+
 Allowed Values: `0`, `1`   
 Description: Set the State of keyboard, `0` is keyboard is off and `1` is keyboard is on
 
 ## extra
+
 Allowed Values: `0`, `1`   
 Description: Only get the information, if the keyboard have the extra region
 
 # Kernel Parameter <a name="kernelparam"></a>
 
 ## Using
+
 ```sh
 sudo modprobe tuxedo_keyboard <params>
 ```
 
 ## color_left
+
 Set the color of the left Keyboard Side
 
 ## color_center
+
 Set the color of the left Keyboard Side
 
 ## color_right
+
 Set the color of the left Keyboard Side
 
 ## color_extra
+
 Set the color of the left Keyboard extra region (Only when is a supported keyboard)
 
 ## mode
+
 Set the mode (on/off) of keyboard
 
 ## brightness
+
 Set the brightness of keyboard
 
 ## state
@@ -191,25 +224,33 @@ Set the brightness of keyboard
 # Modes <a name="modes"></a>
 
 ## CUSTOM
+
 Value: `0`
 
 ## BREATHE
+
 Value: `1`
 
 ## CYCLE
+
 Value: `2`
 
 ## DANCE
+
 Value: `3`
 
 ## FLASH
+
 Value: `4`
 
 ## RANDOM_COLOR
+
 Value: `5`
 
 ## TEMPO
+
 Value: `6`
 
 ## WAVE
+
 Value: `7`
